@@ -7,7 +7,7 @@ from types import CodeType as code, FunctionType as function
 
 def copycode(template, changes):
     if hasattr(code, "replace"):
-        return template.replace(**{"co_" + k: v for k, v in changes.items()})
+        return template.replace(**{f"co_{k}": v for k, v in changes.items()})
     names = [
         "argcount",
         "nlocals",
@@ -29,7 +29,7 @@ def copycode(template, changes):
     if hasattr(code, "co_posonlyargcount"):
         # PEP 570 added "positional only arguments"
         names.insert(1, "posonlyargcount")
-    values = [changes.get(name, getattr(template, "co_" + name)) for name in names]
+    values = [changes.get(name, getattr(template, f"co_{name}")) for name in names]
     return code(*values)
 
 
@@ -41,7 +41,8 @@ def copyfunction(template, funcchanges, codechanges):
         "closure",
     ]
     values = [
-        funcchanges.get(name, getattr(template, "__" + name + "__")) for name in names
+        funcchanges.get(name, getattr(template, f"__{name}__"))
+        for name in names
     ]
     return function(copycode(template.__code__, codechanges), *values)
 

@@ -24,9 +24,7 @@ class NoTransition(Exception):
     def __init__(self, state, symbol):
         self.state = state
         self.symbol = symbol
-        super(Exception, self).__init__(
-            "no transition for {} in {}".format(symbol, state)
-        )
+        super(Exception, self).__init__(f"no transition for {symbol} in {state}")
 
 
 class Automaton(object):
@@ -58,9 +56,7 @@ class Automaton(object):
         """
 
         if self._initialState is not _NO_STATE:
-            raise ValueError(
-                "initial state already set to {}".format(self._initialState)
-            )
+            raise ValueError(f"initial state already set to {self._initialState}")
 
         self._initialState = state
 
@@ -74,11 +70,7 @@ class Automaton(object):
         # transitions.
         for (anInState, anInputSymbol, anOutState, _) in self._transitions:
             if anInState == inState and anInputSymbol == inputSymbol:
-                raise ValueError(
-                    "already have transition from {} via {}".format(
-                        inState, inputSymbol
-                    )
-                )
+                raise ValueError(f"already have transition from {inState} via {inputSymbol}")
         self._transitions.add((inState, inputSymbol, outState, tuple(outputSymbols)))
 
     def allTransitions(self):

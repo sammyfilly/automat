@@ -358,7 +358,7 @@ class VisualizeToolTests(TestCase):
 
             self.assertEqual(len(self.digraphRecorder.saveCalls), 1)
             (call,) = self.digraphRecorder.saveCalls
-            self.assertEqual("{}.dot".format(self.fakeFQPN), call["filename"])
+            self.assertEqual(f"{self.fakeFQPN}.dot", call["filename"])
 
             self.assertFalse(self.digraphRecorder.renderCalls)
 
@@ -376,7 +376,7 @@ class VisualizeToolTests(TestCase):
 
             self.assertEqual(len(self.digraphRecorder.renderCalls), 1)
             (call,) = self.digraphRecorder.renderCalls
-            self.assertEqual("{}.dot".format(self.fakeFQPN), call["filename"])
+            self.assertEqual(f"{self.fakeFQPN}.dot", call["filename"])
             self.assertTrue(call["cleanup"])
 
             self.assertFalse(self.digraphRecorder.saveCalls)

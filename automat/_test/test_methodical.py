@@ -304,6 +304,8 @@ class MethodicalTests(TestCase):
         _methodical._empty()  # chase coverage
         _methodical._docstring()
 
+
+
         class Mechanism(object):
             m = MethodicalMachine()
             with self.assertRaises(ValueError) as cm:
@@ -311,12 +313,10 @@ class MethodicalTests(TestCase):
                 @m.input()
                 def input(self):
                     "an input"
-                    list()  # pragma: no cover
+                    []
 
             self.assertEqual(str(cm.exception), "function body must be empty")
 
-        # all three of these cases should be valid. Functions/methods with
-        # docstrings produce slightly different bytecode than ones without.
 
         class MechanismWithDocstring(object):
             m = MethodicalMachine()
@@ -348,19 +348,21 @@ class MethodicalTests(TestCase):
 
         MechanismWithPass().input()
 
+
+
         class MechanismWithDocstringAndPass(object):
             m = MethodicalMachine()
 
             @m.input()
             def input(self):
                 "an input"
-                pass
 
             @m.state(initial=True)
             def start(self):
                 "starting state"
 
             start.upon(input, enter=start, outputs=[])
+
 
         MechanismWithDocstringAndPass().input()
 
