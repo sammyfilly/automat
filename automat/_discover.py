@@ -126,7 +126,7 @@ def wrapFQPN(fqpn):
                 if child.name.rsplit(".", 1)[-1] == component
             )
         except StopIteration:
-            raise NoObject("{}.{}".format(attribute.name, component))
+            raise NoObject(f"{attribute.name}.{component}")
 
     return attribute
 

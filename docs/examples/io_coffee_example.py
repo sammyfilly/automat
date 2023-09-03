@@ -24,7 +24,7 @@ class CoffeeBrewer(object):
         self._beans = beans
     @_machine.output()
     def _describe_coffee(self):
-        return "A cup of coffee made with {}.".format(self._beans)
+        return f"A cup of coffee made with {self._beans}."
 
     dont_have_beans.upon(put_in_beans, enter=have_beans,
                          outputs=[_save_beans])

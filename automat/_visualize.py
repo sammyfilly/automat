@@ -12,7 +12,7 @@ def _gvquote(s):
 
 
 def _gvhtml(s):
-    return "<{}>".format(s)
+    return f"<{s}>"
 
 
 def elementMaker(name, *children, **attrs):
@@ -20,8 +20,7 @@ def elementMaker(name, *children, **attrs):
     Construct a string from the HTML element description.
     """
     formattedAttrs = " ".join(
-        "{}={}".format(key, _gvquote(str(value)))
-        for key, value in sorted(attrs.items())
+        f"{key}={_gvquote(str(value))}" for key, value in sorted(attrs.items())
     )
     formattedChildren = "".join(children)
     return "<{name} {attrs}>{children}</{name}>".format(
@@ -83,12 +82,12 @@ def makeDigraph(automaton, inputAsString=repr, outputAsString=repr, stateAsStrin
             style=stateShape,
             color="blue",
         )
+    port = "tableport"
     for n, eachTransition in enumerate(automaton.allTransitions()):
         inState, inputSymbol, outState, outputSymbols = eachTransition
-        thisTransition = "t{}".format(n)
+        thisTransition = f"t{n}"
         inputLabel = inputAsString(inputSymbol)
 
-        port = "tableport"
         table = tableMaker(
             inputLabel,
             [outputAsString(outputSymbol) for outputSymbol in outputSymbols],
@@ -99,10 +98,10 @@ def makeDigraph(automaton, inputAsString=repr, outputAsString=repr, stateAsStrin
 
         digraph.edge(
             stateAsString(inState),
-            "{}:{}:w".format(thisTransition, port),
+            f"{thisTransition}:{port}:w",
             arrowhead="none",
         )
-        digraph.edge("{}:{}:e".format(thisTransition, port), stateAsString(outState))
+        digraph.edge(f"{thisTransition}:{port}:e", stateAsString(outState))
 
     return digraph
 
@@ -191,8 +190,5 @@ def tool(
                 view=args.view,
                 cleanup=deleteDot,
             )
-            if deleteDot:
-                msg = "...wrote image into"
-            else:
-                msg = "...wrote image and dot into"
+            msg = "...wrote image into" if deleteDot else "...wrote image and dot into"
             _print(fqpn, msg, args.image_directory)

@@ -203,7 +203,7 @@ def _filterArgs(args, kwargs, inputSpec, outputSpec):
         passed_arg_names += (name, value)
     defaults = zip(inputSpec.args[::-1], inputSpec.defaults[::-1])
     full_kwargs = {n: v for n, v in defaults if n not in passed_arg_names}
-    full_kwargs.update(kwargs)
+    full_kwargs |= kwargs
 
     if outputSpec.varkw:
         # Only pass all kwargs if the output method accepts **kwargs.
@@ -320,7 +320,7 @@ def gensym():
     """
     Create a unique Python identifier.
     """
-    return "_symbol_" + str(next(counter))
+    return f"_symbol_{str(next(counter))}"
 
 
 class MethodicalMachine(object):
